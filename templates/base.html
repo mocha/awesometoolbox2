@@ -36,27 +36,27 @@
           <h2 class="sectiontitle">Your Toolboxes</h2>
           <ul class="sidebarlist unstyled">
             {% for toolbox in user.toolboxes.all %}
-            <li><a href="{% url toolbox_page toolbox.id %}">{{ toolbox.name }}</a></li>
+            <li><a href="{% url "toolbox_page" toolbox.id %}">{{ toolbox.name }}</a></li>
             {% endfor %}
           </ul>
-          <a class="solo" href="{% url new_toolbox %}">+ New toolbox</a>
+          <a class="solo" href="{% url "new_toolbox" %}">+ New toolbox</a>
           {% endif %}
 
           <h2 class="sectiontitle">Filter Tools <br/>by category</h2>
           <ul class="sidebarlist unstyled">
             {% for category in all_categories %}
-            <li><a href="{% url category_page category.id %}" class="{% if category.id == category_tab %} active{% endif %}">{{ category.name }}</a></li>
+            <li><a href="{% url "category_page" category.id %}" class="{% if category.id == category_tab %} active{% endif %}">{{ category.name }}</a></li>
             {% endfor %}
           </ul>
 
           {% if user.is_authenticated %}
-            <a class="solo" href="{% url new_tool %}">+ Add a tool</a>
+            <a class="solo" href="{% url "new_tool" %}">+ Add a tool</a>
             <hr />
-            <a class="solo" href="{% url auth_logout %}">Log Out</a>
+            <a class="solo" href="{% url "auth_logout" %}">Log Out</a>
           {% else %}
             <hr />
-            <a class="solo" href="{% url registration_register %}">Sign Up</a>
-            <a class="solo" href="{% url auth_login %}">Log In</a>
+            <a class="solo" href="{% url "registration_register" %}">Sign Up</a>
+            <a class="solo" href="{% url "auth_login" %}">Log In</a>
           {% endif %}
 
         </div>
