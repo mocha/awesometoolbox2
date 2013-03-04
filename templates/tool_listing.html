@@ -5,18 +5,18 @@
   {% for tool in tools %}
     
     <div class="tool_listing clearfix">
-      <span class="tooltitle"><a href="{% url tool_page tool.id %}">{{ tool.name }}</a></span>
+      <span class="tooltitle"><a href="{% url "tool_page" tool.id %}">{{ tool.name }}</a></span>
       <span class="tooldescription">{{ tool.description }}</span>
       <span class="toolstats">Filed under {% for category in tool.categories.all %}
-        <a href="{% url category_page category.id %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+        <a href="{% url "category_page" category.id %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
       </span>
       <div class="toolactions">
         {% if tool in toolbox.tools.all %}
-        <a href="{% url remove_tool_from_toolbox toolbox.id tool.id %}" class="addtool">Remove from this toolbox</a>
+        <a href="{% url "remove_tool_from_toolbox" toolbox.id tool.id %}" class="addtool">Remove from this toolbox</a>
         {% else %}
         <a href="" class="addtool">Add this to a toolbox</a>
         {% endif %}
-        <a href="{% url tool_page tool.id %}" class="viewtool">View tool details</a>
+        <a href="{% url "tool_page" tool.id %}" class="viewtool">View tool details</a>
       </div>
 
   
@@ -27,7 +27,7 @@
   {% if toolbox %}
     <hr />
       <div class="toolactions">
-        <a class="solo" href="{% url delete_toolbox toolbox.id %}" class="addtool">Delete this toolbox</a>
+        <a class="solo" href="{% url "delete_toolbox" toolbox.id %}" class="addtool">Delete this toolbox</a>
       </div>
   {% endif %}
 
