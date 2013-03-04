@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block block_page_title %}You've been logged out.{% endblock %}
+
+{% block body_content %}
+<p>Thanks for stopping by; when you come back, don't forget to <a href="{% url auth_login %}">log in</a> again.</p>
+{% endblock %}

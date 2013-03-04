@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block body_content %}
+
+	{{ form.errors }}
+
+	<form action="" method="POST">
+
+		{% csrf_token %}
+		
+		<ul class="unstyled">
+
+			<li class="form-item">
+				<label for="name">Name:</label>
+				{{ form.name }}
+			</li>
+
+			<li class="form-item">
+				<label for="">Description:</label>
+				{{ form.description }}
+			</li>
+
+			<li class="form-item">
+				{{ form.is_private }} Make this toolbox private
+			</li>
+
+			<li class="form-item">
+				<br />
+				<input type="submit" class="btn btn-primary" value="Submit" />
+			</li>
+
+		</ul>
+
+	</form>
+
+{% endblock %}

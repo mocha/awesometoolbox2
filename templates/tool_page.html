@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block body_content %}
+
+	<div class="cardbg clearfix">
+
+		<p>{{ tool.description }}</p>
+
+		<p>Developer Website: {{ tool.website|urlize }}</p>
+
+		<p>Filed under {% for category in tool.categories.all %}<a href="{% url category_page category.id %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+
+		<p>Found in {{ tool.toolboxes.count }} toolbox{{ tool.toolboxes.count|pluralize:"es" }}. First added by {{ tool.user }}.</p>
+
+		{% if user.is_authenticated %}
+			<p>Rate this tool: <a href="{% url add_rating tool.id "1" %}">Thumbs Up!</a> / <a href="{% url add_rating tool.id "0" %}">Thumbs Down!</a>
+		{% endif %}
+
+		{% if tool.rating %}
+			<p>Rating: {{ tool.rating.value }}</p>
+		{% else %}
+			<p>Rating: <em>This tool has not been rated yet, by anyone.</em>
+		{% endif %}
+
+		<div class="toolactions">
+			{% if user.is_authenticated %}<div class="addbutton">
+				<a href="#" class="addbutton_toggle">Add this to a toolbox</a>
+				<ul class="toolboxlist unstyled" style="display:none">
+					{% for toolbox in user.toolboxes.all %}
+						{% if tool not in toolbox.tools.all %}
+							<li><a href="{% url add_tool_to_toolbox toolbox.id tool.id %}">Add to {{ toolbox.name }}</a></li>
+						{% else %}
+							<li><a href="{% url remove_tool_from_toolbox toolbox.id tool.id %}">Remove from {{ toolbox.name }}</a></li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</div>{% endif %}
+			{% ifequal tool.user user %}
+			<a href="{% url delete_tool tool.id%}">Delete this tool</a>
+			{# <a href="/tool/{{ tool.id}}/edit">Edit this tool</a> #}
+			{% endifequal %}
+		</div>
+
+	</div>
+
+
+	<div class="row">
+
+	{% if tool.changelog_feed %}
+	<div class="span5"><div class="cardbg clearfix">
+
+		<h2 class="sectiontitle">{{ changelog_title }}</h2>
+
+		{% for entry in changelog_entries %}
+			<strong><a href="{{ entry.link }}" target="_blank">{{ entry.title }}</a></strong>
+			<p class="changelog_meta">By {{ entry.author }} on {{ entry.date }}</p>
+		{% endfor %}
+	
+	</div></div>
+	{% endif %}
+
+
+
+	{% if related_tools %}
+	<div class="span5"><div class="cardbg clearfix">
+
+		<h2 class="sectiontitle">Other Tools in {{ related_category.name }}</h2>
+
+		<ul class="unstyled tool_listing_mini">
+			{% for tool in related_tools %}
+			<li class="{% if forloop.last %} last{% endif %}">
+				<span class="tooltitle"><a href="{% url tool_page tool.id %}">{{ tool.name }}</a></span>
+				<span class="tooldescription">{{ tool.toolboxes.count }} toolbox{{ tool.toolboxes.count|pluralize:"es" }} / {% for category in tool.categories.all %}<a href="{% url category_page category.id %}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+			</li>
+			{% endfor %}
+		</ul>
+
+		<div class="toolactions">
+			<a href="{% url category_page related_category.id %}">View all tools in {{ related_category.name }}</a>
+		</div>
+	</div></div>
+
+	{% endif %}
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block body_content %}
+	
+	{{ form.errors }}
+
+	<form action="" method="POST">
+
+		{% csrf_token %}
+		
+		<ul class="unstyled">
+
+			<li class="form-item">
+				<label for="name">Name:</label>
+				{{ form.name }}
+			</li>
+
+			<li class="form-item">
+				<label for="">Description:</label>
+				{{ form.description }}
+			</li>
+
+			<li class="form-item">
+				<label for="link">Website:</label>
+				{{ form.website }}
+				<p class="helptext">ex: http://google.com</p>
+			</li>
+
+			<li class="form-item">
+				<label for="link">Github Changelog Feed:</label>
+				{{ form.changelog_feed }}
+				<p class="helptext">ex: https://github.com/twitter/bootstrap/commits/master.atom</p>
+			</li>
+
+			<li class="form-item">
+				<label for="categories">Categories:</label>
+				<input id="categories" name="categories" maxlength="200" type="text" {% if form.categories %}value="{{ form.categories }}"{% endif %}/>
+				<p class="helptext">Use commas to separate tags.</p>
+			</li>
+
+			<li class="form-item">
+				<input type="submit" class="btn btn-primary" value="Submit" />
+			</li>
+
+		</ul>
+
+	</form>
+
+{% endblock %}

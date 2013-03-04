@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Awesome Toolbox{% if page_title %} - {{ page_title }}{% endif %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% get_static_prefix %}img/favicon.ico" rel="icon" type="image/x-icon" />
+
+    <!-- Le styles -->
+    <link href="{% get_static_prefix %}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% get_static_prefix %}css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="{% get_static_prefix %}css/screen.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div id="sidebar_left" class="span2 sidebar">
+
+          <a id="logo" href="/">awesome<br />toolbox</a>
+
+          {% if user.is_authenticated %}
+          <h2 class="sectiontitle">Your Toolboxes</h2>
+          <ul class="sidebarlist unstyled">
+            {% for toolbox in user.toolboxes.all %}
+            <li><a href="{% url toolbox_page toolbox.id %}">{{ toolbox.name }}</a></li>
+            {% endfor %}
+          </ul>
+          <a class="solo" href="{% url new_toolbox %}">+ New toolbox</a>
+          {% endif %}
+
+          <h2 class="sectiontitle">Filter Tools <br/>by category</h2>
+          <ul class="sidebarlist unstyled">
+            {% for category in all_categories %}
+            <li><a href="{% url category_page category.id %}" class="{% if category.id == category_tab %} active{% endif %}">{{ category.name }}</a></li>
+            {% endfor %}
+          </ul>
+
+          {% if user.is_authenticated %}
+            <a class="solo" href="{% url new_tool %}">+ Add a tool</a>
+            <hr />
+            <a class="solo" href="{% url auth_logout %}">Log Out</a>
+          {% else %}
+            <hr />
+            <a class="solo" href="{% url registration_register %}">Sign Up</a>
+            <a class="solo" href="{% url auth_login %}">Log In</a>
+          {% endif %}
+
+        </div>
+
+        <div id="content" class="span10">
+          
+          <div id="content_header">
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">
+                <strong>{% if message.tags %}{{ message.tags }}{% endif %}!</strong> {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <h1 class="title"><span class="page_icon"></span>{{ page_title }}{% block block_page_title %}{% endblock %}</h1>
+            {% if page_subtitle %}
+                <p>{{ page_subtitle }}</p>
+            {% endif %}
+          </div>
+
+          {% block body_content %}{% endblock %}
+
+        </div>
+
+
+
+
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//use.typekit.net/ehb4clt.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <script type="text/javascript">
+    
+      $(document).on('click', 'a.addbutton_toggle', function(event) {
+        event.preventDefault();
+        $(this).siblings('.toolboxlist').slideToggle();
+      })
+
+    </script>
+
+  </body>
+</html>
+
